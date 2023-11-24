@@ -21,13 +21,16 @@
 	<p id='used'></p>
 	<p id='remain'></p>
 	<br>
+	<label for='reduse'>割引</label>
+	<input type='checkbox' id='reduse' name='reduse'>
+	<br>
 	<button id="reset">reset</button>
 	<br>
     <select id="leftBox" size='15'>
-        <option value="150">リンゴ(150円)</option>
+ <!--   <option value="150">リンゴ(150円)</option>
         <option value="200">みかん(200円)</option>
         <option value="500">イチゴ(500円)</option>
-        <option value="700">マンゴー(700円)</option>
+        <option value="700">マンゴー(700円)</option>-->      
     </select>
     
     
@@ -40,12 +43,34 @@
     
         <script type="text/javascript">
     	$(function() {
+    		
+ 
     		var val = '';
     		var leftbox = [];
     		var cost = 0;
     		var result = $('#name').val();
+    		var appleval = 150;
+    		var optionLists = [
+    			{text: 'リンゴ(150円)',value:appleval },
+    			{text: 'みかん(200円)',value:'240'},
+    			{text: 'イチゴ(500円)',value:'500'},
+    			{text: 'マンゴー(700円)',value:'700'}
+    		];
+    		
+    		makeoption(optionLists);
     		resultText(cost,result);
     		
+       		function makeoption(optionLists){
+       			$('#leftBox').append('');
+	    		var keys = Object.keys(optionLists);
+	    		keys.forEach(function(key, i){
+	    			var content = this[key];
+	    			var option = $('<option>').text(content['text']).val(content['value']);
+	    			
+	    			$('#leftBox').append(option);
+	    		},optionLists);
+    		}
+       		
 			function resultText(cost,result){
 				
 				result = Number(result) - Number(cost);
@@ -91,6 +116,16 @@
 				cost = 0;
 				resultText(cost,result);
 			});
+			
+			$('#reduse').change(function(){
+				
+				var keys = Object.keys(optionLists);
+	    		keys.forEach(function(key, i){
+	    			this[key]['value'] =Number(this[key]['value'])*0.84;
+	    			console.log(this[key]['value']);
+	    		},optionLists);
+	    		makeoption(optionLists);
+			})
 		});
     	</script>
 </body>
