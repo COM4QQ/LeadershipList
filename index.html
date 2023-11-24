@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JS勉強中</title>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    
+    
+    <style>
+    	select {
+		    min-width: 150px;  /* 最小幅 */
+		    min-height: 330px; /* 最小高さ */
+		    margin: 10px;
+		}
+    </style>
+</head>
+<body>
+
+	<label for='name'>所持金</label>
+	<input type='text' id='name' name='name' value='700'>
+	<p id='used'></p>
+	<p id='remain'></p>
+	<br>
+	<button id="reset">reset</button>
+	<br>
+    <select id="leftBox" size='15'>
+        <option value="150">リンゴ(150円)</option>
+        <option value="200">みかん(200円)</option>
+        <option value="500">イチゴ(500円)</option>
+        <option value="700">マンゴー(700円)</option>
+    </select>
+    
+    
+     <button id="moveRight">→</button>
+   
+    <button id="moveLeft">←</button>
+
+    <select id="rightBox" size='15'>
+    </select>
+    
+        <script type="text/javascript">
+    	$(function() {
+    		var val = '';
+    		var leftbox = [];
+    		var cost = 0;
+    		var result = $('#name').val();
+    		resultText(cost,result);
+    		
+			function resultText(cost,result){
+				
+				result = Number(result) - Number(cost);
+				$('#used').text("現在"+ cost +'です。');
+				$('#remain').text("残り"+ result +'です。');
+				editoption(cost,result);
+			};
+			
+			function editoption(cost,result){
+				
+				leftbox = $('#leftBox option:not(:selected)').val();
+				console.log(leftbox);
+			}
+			
+    		$('#name').on("change",function(){
+    			result = $('#name').val();
+    			resultText(cost,result);
+    			console.log(result);
+    		});
+    		
+    		
+			$('#moveRight').click(function(){
+				val = $('#leftBox').val();
+				$('#leftBox option:selected').appendTo('#rightBox');
+				$("option:selected").prop("selected", false);
+				cost = Number(cost) + Number(val);
+				resultText(cost,result);
+				console.log(val);
+			});
+			
+			
+			$('#moveLeft').click(function(){
+				val = $('#rightBox').val();
+				$('#rightBox option:selected').appendTo('#leftBox');
+				$("option:selected").prop("selected", false);
+				cost = Number(cost) - Number(val);
+				resultText(cost,result);
+				console.log(val);
+			});
+			
+			$('#reset').click(function(){
+				$('#rightBox :parent').appendTo('#leftBox');
+				cost = 0;
+				resultText(cost,result);
+			});
+		});
+    	</script>
+</body>
+
+</html>
